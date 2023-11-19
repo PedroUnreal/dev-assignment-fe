@@ -48,10 +48,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/client-preset": "4.1.0",
     "@graphql-codegen/introspection": "4.0.0",
     "prettier": "^3.1.0",
     "typescript": "^5.2.2"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|sass|scss)$": "<rootDir>/src/__mocks__/styleMock.js"
+    }
   }
 }
