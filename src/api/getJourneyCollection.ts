@@ -30,7 +30,7 @@ export const GET_JOURNEYS_COLLECTION = gql`
   }
 `
 export function useGetJourneyCollection(address: string, orderStatus: OrderStatus) {
-  const query = useQuery<{ journeyCollection: ResponseDTO<JourneyDTO<TravellerDTO>> }>(GET_JOURNEYS_COLLECTION,
+  const query = useQuery<{ journeyCollection: ResponseDTO<JourneyDTO> }>(GET_JOURNEYS_COLLECTION,
     { variables: { address, status: orderStatus } });
 
   const journeyCollection = useMemo(() => {
@@ -45,3 +45,13 @@ export function useGetJourneyCollection(address: string, orderStatus: OrderStatu
     data: journeyCollection,
   };
 }
+
+
+
+// delete 
+// mutation deleteFromjourneyCollection($address: String, $status: String){
+//   deleteFromjourneyCollection(filter: 
+//     {from_address: {
+//     eq: "String"
+//     }}, atMost:1) 
+// }

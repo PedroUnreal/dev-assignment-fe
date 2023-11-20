@@ -6,8 +6,8 @@ type ResponseDTO<DTO> = {
   totalCount: number | undefined;
 };
 
-type JourneyDTO<TravellerDTO> = {
-  id
+type JourneyDTO = {
+  id: string;
   fare: number;
   status: string;
   to_address: string;
@@ -23,4 +23,4 @@ type TravellerDTO = {
   phone_number: string;
 }
 
-type OrderStatus = "PENDING" | "COMPLETED" | ""
+type OrderStatus = "PENDING" | "COMPLETED" | "" | "IN PROGRESS" | "CANCELLED";

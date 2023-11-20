@@ -3,15 +3,23 @@ import { useCallback } from "react";
 export const options: Array<{ value: OrderStatus; label: string }> = [
   {
     value: "",
-    label: "ALL",
+    label: "ALL"
   },
   {
     value: "PENDING",
-    label: "PENDING",
+    label: "PENDING"
   },
   {
     value: "COMPLETED",
-    label: "COMPLETED",
+    label: "COMPLETED"
+  },
+  {
+    value: "CANCELLED",
+    label: "CANCELLED"
+  },
+  {
+    value: "IN PROGRESS",
+    label: "IN PROGRESS"
   },
 ];
 
