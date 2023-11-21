@@ -5,8 +5,8 @@ import { useCreateTraveller } from "../api/createTraveller";
 export default function CreateNewJourneyComponent({ onAdd }: { onAdd: () => void }) {
     const [name, setName] = useState("Name");
     const [lastname, setLastname] = useState("Lastname");
-    const [from, setFrom] = useState("FROM");
-    const [to, setTo] = useState("TO");
+    const [from, setFrom] = useState("from");
+    const [to, setTo] = useState("to");
 
     const { createJourney } = useCreateJourney();
     const { createTraveller } = useCreateTraveller();
@@ -52,7 +52,7 @@ export default function CreateNewJourneyComponent({ onAdd }: { onAdd: () => void
             .catch((error) => {
                 console.log(error)
             });
-    }, [name, lastname, from, to, onAdd]);
+    }, [name, lastname, from, to, onAdd, createJourney, createTraveller]);
 
     return (
         <div className="create-journey-form">

@@ -9,19 +9,19 @@ export const CREATE_JOURNEY = gql`
 `;
 
 export function useCreateJourney() {
-    const [mutateFunction, { data, loading, error }] = useMutation(CREATE_JOURNEY);
+  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_JOURNEY);
 
-    const createJourney = useCallback(
-        async (args: { objects: any[] }) => {
-            return await mutateFunction(addVariablesWrapper(args));
-        },
-        [mutateFunction],
-    );
+  const createJourney = useCallback(
+    async (args: { objects: Omit<JourneyDTO, "id">[] }) => {
+      return await mutateFunction(addVariablesWrapper(args));
+    },
+    [mutateFunction],
+  );
 
-    return {
-        createJourney,
-        data,
-        isLoading: loading,
-        error: error?.message,
-    };
+  return {
+    createJourney,
+    data,
+    isLoading: loading,
+    error: error?.message,
+  };
 }

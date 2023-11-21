@@ -16,7 +16,7 @@ export function useCreateTraveller() {
     const [mutateFunction, { data, loading, error }] = useMutation(CREATE_TRAVELLER);
 
     const createTraveller = useCallback(
-        async (args: { objects: any[] }) => {
+        async (args: { objects: Omit<TravellerDTO, "id">[] }) => {
             return await mutateFunction(addVariablesWrapper(args));
         },
         [mutateFunction],

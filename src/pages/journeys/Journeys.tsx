@@ -1,35 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
-import { GET_JOURNEYS_COLLECTION } from "../../api/getJourneyCollection";
+import { useState } from "react";
+import { useGetJourneyCollection } from "../../api/getJourneyCollection";
 import InputFilter from "../../components/InputFilter";
 import "./Journeys.scss";
 import SelectFilter from "../../components/SelectFilter";
 import CreateNewJourneyComponent from "../../components/CreateNewJourneyComponent";
 import ButtonCompleteJourney from "../../components/ButtonCompleteJourney";
-import { useLazyQuery } from "@apollo/client";
-import { addVariablesWrapper } from "../../api/utils/variablesAdapter";
 import ButtonDeleteJourney from "../../components/ButtonDeleteJourney";
 
 export default function Journeys() {
   const [inputAddress, setAddress] = useState<string>("");
   const [orderStatus, setOrderStatus] = useState<OrderStatus>("");
-  const [journeys, setJourneys] = useState<JourneyDTO[]>([]);
-
-  const [getJourneys] = useLazyQuery(GET_JOURNEYS_COLLECTION);
-
-  const getJourneysHandler = useCallback(() => {
-    getJourneys(addVariablesWrapper({ address: inputAddress, status: orderStatus })).then(({ data }) => {
-      if (data?.journeyCollection) {
-        setJourneys(data.journeyCollection.edges.map((edge: any) => {
-          return edge.node;
-        }));
-      }
-    })
-  }, [inputAddress, orderStatus, getJourneys])
-
-  useEffect(() => {
-    getJourneysHandler();
-  }, [getJourneysHandler]);
-  // const { data: journeys } = useGetJourneyCollection(inputAddress, orderStatus);
+  const [journeys, getJourneysHandler] = useGetJourneyCollection(inputAddress, orderStatus);
 
   return (
     <div className="content">

@@ -1,6 +1,6 @@
-import { renderHook } from "@testing-library/react";
-import { GET_JOURNEYS_COLLECTION, useGetJourneyCollection } from "../getJourneyCollection";
-import * as ApolloClient from "@apollo/client"
+import { act, renderHook } from "@testing-library/react";
+import { useGetJourneyCollection } from "../getJourneyCollection";
+import * as ApolloClient from "@apollo/client";
 
 const journeysMockResponse = {
     "data": {
@@ -51,16 +51,48 @@ const formattedJourneysList = [
 ];
 
 describe("getJourneyCollection", () => {
-    test("Returns journeys list", () => {
-        jest.spyOn(ApolloClient, "useQuery").mockReturnValue(journeysMockResponse as any)
+    let getJourneys: jest.Mock;
 
-        const { result } = renderHook(() => useGetJourneyCollection("", ""));
-        expect(result.current).toEqual({ data: formattedJourneysList });
+    beforeEach(() => {
+        getJourneys = jest.fn().mockResolvedValue(journeysMockResponse);
     });
-    test("Is called with filters", () => {
-        jest.spyOn(ApolloClient, "useQuery").mockReturnValue(journeysMockResponse as any)
 
-        renderHook(() => useGetJourneyCollection("London", "COMPLETED"));
-        expect(ApolloClient.useQuery).toBeCalledWith(GET_JOURNEYS_COLLECTION, { variables: { address: "London", status: "COMPLETED" } });
+    afterEach(() => {
+        jest.clearAllMocks();
     });
-})
+
+    test("Returns journeys list", async () => {
+        jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys] as any);
+
+        let result: any;
+
+        // eslint-disable-next-line
+        await act(() => {
+            result = renderHook(() => useGetJourneyCollection("", "")).result;
+        })
+
+        expect(getJourneys).toBeCalledWith({
+            variables: {
+                address: "",
+                status: "",
+            }
+        });
+
+        expect(result.current[0]).toEqual(formattedJourneysList);
+    });
+    test("Is called with filters", async () => {
+        jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys] as any);
+
+        /* eslint-disable */
+        await act(() => {
+            renderHook(() => useGetJourneyCollection("London", "COMPLETED")).result;
+        });
+
+        expect(getJourneys).toBeCalledWith({
+            variables: {
+                address: "London",
+                status: "COMPLETED",
+            }
+        });
+    });
+});

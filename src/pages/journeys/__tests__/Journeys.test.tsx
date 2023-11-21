@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import Journeys from "../Journeys";
 import * as JourneyCollection from "../../../api/getJourneyCollection";
+import { MockedProvider } from "@apollo/client/testing";
 
 const journeysMock = [
     {
@@ -23,24 +24,31 @@ const journeysMock = [
 ];
 
 describe("Journeys", () => {
-    test("Table of journeys is rendered", () => {
-        jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue({ data: journeysMock });
-        render(<Journeys />);
+    const getJourneysMock = jest.fn();
+
+    test("Table of journeys is rendered", async () => {
+        jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue([journeysMock, getJourneysMock] as any);
+
+        render(<Journeys />, { wrapper: ApolloWrapper });
 
         expect(screen.getByTestId("journeys_table")).toBeInTheDocument();
         expect(screen.getByText("London Heathrow Airport (HTR)")).toBeInTheDocument();
-    });
-    test("Empty journeys", () => {
-        jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue({ data: [] });
-        render(<Journeys />);
-
-        expect(screen.getByText("No journeys were found")).toBeInTheDocument();
-    });
-    test("useGetJourneyCollection query is called", () => {
-        jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue({ data: journeysMock });
-        render(<Journeys />);
 
         expect(JourneyCollection.useGetJourneyCollection).toBeCalledTimes(1);
         expect(JourneyCollection.useGetJourneyCollection).toBeCalledWith("", "");
     });
-})
+    test("Empty journeys", () => {
+        jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue([[], getJourneysMock] as any);
+        render(<Journeys />, { wrapper: ApolloWrapper });
+
+        expect(screen.getByText("No journeys were found")).toBeInTheDocument();
+    });
+});
+
+const ApolloWrapper = ({ children }: React.PropsWithChildren) => {
+    return (
+        <MockedProvider mocks={[]} addTypename={false}>
+            {children}
+        </MockedProvider>
+    )
+}

@@ -23,13 +23,14 @@ table {
   width: 100%;
   border-collapse: collapse;
 
-  th, td {
+  th,
+  td {
     border: 1px solid black;
     text-align: center;
   }
 }
 
-.icon{
+.icon {
   font-size: 32px;
 }
 
@@ -45,13 +46,13 @@ table {
   display: flex;
   flex-direction: row;
   width: 100%;
+  align-items: center;
 
   div {
     margin: 10px;
   }
 
   button {
-  height: 20px;
-  align-self: center;
+    margin: 10px;
   }
 }

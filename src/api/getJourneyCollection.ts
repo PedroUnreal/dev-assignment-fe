@@ -1,7 +1,21 @@
-import { gql, useQuery } from "@apollo/client"
-import { useMemo } from "react";
+import { TypedDocumentNode, gql, useLazyQuery } from "@apollo/client"
+import { useCallback, useEffect, useState } from "react";
+import { addVariablesWrapper } from "./utils/variablesAdapter";
 
-export const GET_JOURNEYS_COLLECTION = gql`
+type JourneysData = {
+  journeyCollection: {
+    edges: Array<{
+      node: JourneyDTO
+    }>;
+  }
+}
+
+type JourneysFilterVars = {
+  address: string;
+  status: string;
+}
+
+export const GET_JOURNEYS_COLLECTION: TypedDocumentNode<JourneysData, JourneysFilterVars> = gql`
   query JourneyCollection($address: String, $status: String){
     journeyCollection(filter: {and: [{or :[
       {to_address: {
@@ -29,19 +43,25 @@ export const GET_JOURNEYS_COLLECTION = gql`
     }
   }
 `
-export function useGetJourneyCollection(address: string, orderStatus: OrderStatus) {
-  const query = useQuery<{ journeyCollection: ResponseDTO<JourneyDTO> }>(GET_JOURNEYS_COLLECTION,
-    { variables: { address, status: orderStatus } });
 
-  const journeyCollection = useMemo(() => {
-    if (query.data?.journeyCollection) {
-      return query.data.journeyCollection.edges.map((edge) => {
+export function useGetJourneyCollection(inputAddress: string, orderStatus: string): [JourneyDTO[], () => void] {
+  const [getJourneys] = useLazyQuery(GET_JOURNEYS_COLLECTION);
+  const [journeys, setJourneys] = useState<JourneyDTO[]>([]);
+
+  const getJourneysHandler = useCallback(async () => {
+    const { data } = await getJourneys(addVariablesWrapper({ address: inputAddress, status: orderStatus }))
+
+    if (data?.journeyCollection) {
+      setJourneys(data.journeyCollection.edges.map((edge) => {
         return edge.node;
-      });
+      }));
     }
-  }, [query.data]);
 
-  return {
-    data: journeyCollection,
-  };
+  }, [inputAddress, orderStatus, getJourneys])
+
+  useEffect(() => {
+    getJourneysHandler();
+  }, [getJourneysHandler]);
+
+  return [journeys, getJourneysHandler];
 }
