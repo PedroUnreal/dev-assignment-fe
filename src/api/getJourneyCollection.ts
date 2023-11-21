@@ -45,13 +45,3 @@ export function useGetJourneyCollection(address: string, orderStatus: OrderStatu
     data: journeyCollection,
   };
 }
-
-
-
-// delete 
-// mutation deleteFromjourneyCollection($address: String, $status: String){
-//   deleteFromjourneyCollection(filter: 
-//     {from_address: {
-//     eq: "String"
-//     }}, atMost:1) 
-// }

@@ -4,9 +4,10 @@ import InputFilter from "../../components/InputFilter";
 import "./Journeys.scss";
 import SelectFilter from "../../components/SelectFilter";
 import CreateNewJourneyComponent from "../../components/CreateNewJourneyComponent";
-import ButtonCancellJourney from "../../components/ButtonCancellJourney";
+import ButtonCompleteJourney from "../../components/ButtonCompleteJourney";
 import { useLazyQuery } from "@apollo/client";
 import { addVariablesWrapper } from "../../api/utils/variablesAdapter";
+import ButtonDeleteJourney from "../../components/ButtonDeleteJourney";
 
 export default function Journeys() {
   const [inputAddress, setAddress] = useState<string>("");
@@ -68,7 +69,8 @@ export default function Journeys() {
                   <td>{journey.from_address}</td>
                   <td>{journey.to_address}</td>
                   <td>{journey.status}</td>
-                  <td>{journey.status === "IN PROGRESS" && (<ButtonCancellJourney id={journey.id} />)}</td>
+                  <td>{journey.status === "IN PROGRESS" && (<ButtonCompleteJourney onAdd={getJourneysHandler} id={journey.id} />)}</td>
+                  <td><ButtonDeleteJourney onAdd={getJourneysHandler} id={journey.id} /></td>
                 </tr>
               ))}
             </tbody>

@@ -43,8 +43,14 @@ export default function CreateNewJourneyComponent({ onAdd }: { onAdd: () => void
             .then(() => {
                 onAdd();
             })
+            .then(() => {
+                setName("");
+                setLastname("");
+                setFrom("");
+                setTo("");
+            })
             .catch((error) => {
-                // do smth
+                console.log(error)
             });
     }, [name, lastname, from, to, onAdd]);
 
