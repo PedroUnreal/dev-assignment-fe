@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useGetJourneyCollection } from "../../api/getJourneyCollection";
 import InputFilter from "../../components/InputFilter";
-import "./Journeys.scss";
 import SelectFilter from "../../components/SelectFilter";
 import CreateNewJourneyComponent from "../../components/CreateNewJourneyComponent";
 import ButtonCompleteJourney from "../../components/ButtonCompleteJourney";
-import ButtonDeleteJourney from "../../components/ButtonDeleteJourney";
+import ButtonCancelJourney from "../../components/ButtonCancelJourney";
+import "./Journeys.scss";
 
 export default function Journeys() {
   const [inputAddress, setAddress] = useState<string>("");
@@ -35,24 +35,12 @@ export default function Journeys() {
                 <th>To </th>
                 <th>Status</th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {journeys.map((journey) => (
-                <tr className="journey" key={journey.id}>
-                  {journey.inbound ? (
-                    <td className="icon">&#128747;</td>
-                  ) : (
-                    <td className="icon">&#128748;</td>
-                  )}
-                  <td>{journey.traveller_info.first_name}</td>
-                  <td>{journey.traveller_info.last_name}</td>
-                  <td>{journey.from_address}</td>
-                  <td>{journey.to_address}</td>
-                  <td>{journey.status}</td>
-                  <td>{journey.status === "IN PROGRESS" && (<ButtonCompleteJourney onAdd={getJourneysHandler} id={journey.id} />)}</td>
-                  <td><ButtonDeleteJourney onAdd={getJourneysHandler} id={journey.id} /></td>
-                </tr>
+                <Journey key={journey.id} journey={journey} getJourneysHandler={getJourneysHandler} />
               ))}
             </tbody>
           </table>
@@ -62,3 +50,28 @@ export default function Journeys() {
     </div>
   );
 }
+
+const Journey = memo(({ journey, getJourneysHandler }: { journey: JourneyDTO, getJourneysHandler: () => void }) => {
+  return (
+    <tr className="journey">
+      {journey.inbound ? (
+        <td className="icon">&#128747;</td>
+      ) : (
+        <td className="icon">&#128748;</td>
+      )}
+      <td>{journey.traveller_info.first_name}</td>
+      <td>{journey.traveller_info.last_name}</td>
+      <td>{journey.from_address}</td>
+      <td>{journey.to_address}</td>
+      <td>{journey.status}</td>
+      <td className="complete-button">
+        {journey.status === "IN PROGRESS" &&
+          (<ButtonCompleteJourney onAdd={getJourneysHandler} id={journey.id} />)}</td>
+      <td>
+        {journey.status !== "CANCELLED" &&
+          <ButtonCancelJourney onAdd={getJourneysHandler} id={journey.id} />
+        }
+      </td>
+    </tr>
+  )
+}, ((oldProps, newProps) => oldProps.journey.status === newProps.journey.status));

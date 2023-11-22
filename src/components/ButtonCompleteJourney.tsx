@@ -1,25 +1,25 @@
 import { useCallback } from "react"
-import { useCompleteJourney } from "../api/completeJourney"
+import { useSetJourneyStatus } from "../api/setJourneyStatus"
 
 type ButtonCompleteJourneyProps = {
-    onAdd: () => void;
-    id: string
+  onAdd: () => void;
+  id: string
 }
 
 export default function ButtonCompleteJourney({ onAdd, id }: ButtonCompleteJourneyProps) {
-    const { completeJourney } = useCompleteJourney();
+  const { setJourneyStatus } = useSetJourneyStatus();
 
-    const handleCompleteButton = useCallback(
-        async () => {
-            try {
-                await completeJourney({ id });
-                onAdd();
-            } catch (error) {
-                console.log(error)
-            }
-        }, [id, completeJourney, onAdd])
+  const handleCompleteButton = useCallback(
+    async () => {
+      try {
+        await setJourneyStatus({ id, status: "COMPLETED" });
+        onAdd();
+      } catch (error) {
+        console.log(error)
+      }
+    }, [id, setJourneyStatus, onAdd])
 
-    return (
-        <button onClick={handleCompleteButton}>Complete</button>
-    )
+  return (
+    <button onClick={handleCompleteButton}>Complete</button>
+  )
 }

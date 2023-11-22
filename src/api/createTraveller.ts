@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { addVariablesWrapper } from './utils/variablesAdapter';
 
 const CREATE_TRAVELLER = gql`
@@ -13,19 +13,19 @@ const CREATE_TRAVELLER = gql`
 `;
 
 export function useCreateTraveller() {
-    const [mutateFunction, { data, loading, error }] = useMutation(CREATE_TRAVELLER);
+  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_TRAVELLER);
 
-    const createTraveller = useCallback(
-        async (args: { objects: Omit<TravellerDTO, "id">[] }) => {
-            return await mutateFunction(addVariablesWrapper(args));
-        },
-        [mutateFunction],
-    );
+  const createTraveller = useCallback(
+    async (args: { objects: Omit<TravellerDTO, "id">[] }) => {
+      return await mutateFunction(addVariablesWrapper(args));
+    },
+    [mutateFunction],
+  );
 
-    return {
-        createTraveller,
-        data,
-        isLoading: loading,
-        error: error?.message,
-    };
+  return {
+    createTraveller,
+    data,
+    isLoading: loading,
+    error: error?.message,
+  };
 }

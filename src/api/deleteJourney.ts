@@ -14,19 +14,19 @@ const DELETE_JOURNEY = gql`
   `;
 
 export function useDeleteJourney() {
-    const [mutateFunction, { data, loading, error }] = useMutation(DELETE_JOURNEY);
+  const [mutateFunction, { data, loading, error }] = useMutation(DELETE_JOURNEY);
 
-    const deleteJourney = useCallback(
-        async (args: { id: string }) => {
-            return await mutateFunction(addVariablesWrapper(args));
-        },
-        [mutateFunction],
-    );
+  const deleteJourney = useCallback(
+    async (args: { id: string }) => {
+      return await mutateFunction(addVariablesWrapper(args));
+    },
+    [mutateFunction],
+  );
 
-    return {
-        deleteJourney,
-        data,
-        isLoading: loading,
-        error: error?.message,
-    };
+  return {
+    deleteJourney,
+    data,
+    isLoading: loading,
+    error: error?.message,
+  };
 }
