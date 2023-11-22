@@ -11,6 +11,7 @@ export default function CreateNewJourneyComponent({
   const [lastname, setLastname] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [inbound, setInbound] = useState(false);
 
   const { createJourney } = useCreateJourney();
   const { createTraveller } = useCreateTraveller();
@@ -39,10 +40,10 @@ export default function CreateNewJourneyComponent({
                     from_address: from,
                     to_address: to,
                     fare: 123,
-                    inbound: true,
                     traveller_info:
                       data?.insertIntotraveller_infoCollection.records[0].id,
                     status: "IN PROGRESS",
+                    inbound,
                   },
                 ],
               });
@@ -61,7 +62,7 @@ export default function CreateNewJourneyComponent({
             console.log(error);
           });
       },
-      [name, lastname, from, to, onAdd, createJourney, createTraveller],
+      [name, lastname, from, to, inbound, onAdd, createJourney, createTraveller],
     );
 
   return (
@@ -72,6 +73,15 @@ export default function CreateNewJourneyComponent({
         className="create-journey-form"
         onSubmit={handleCreateJourneyByClick}
       >
+        <div>
+          <label htmlFor="input-inbound">Inbound</label>
+          <input
+            id="input-inbound"
+            checked={inbound}
+            onChange={(e) => setInbound(e.target.checked)}
+            type="checkbox"
+          />
+        </div>
         <div>
           <label htmlFor="input-name">Name:</label>
           <input
@@ -84,7 +94,7 @@ export default function CreateNewJourneyComponent({
         <div>
           <label htmlFor="input-lastname">Lastname:</label>
           <input
-            id="input-name"
+            id="input-lastname"
             value={lastname}
             onChange={(e) => setLastname(e.target.value)}
             type="text"

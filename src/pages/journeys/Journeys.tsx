@@ -17,7 +17,7 @@ export default function Journeys() {
 
   return (
     <div className="content">
-      <p className="greeting">Orders table</p>
+      <p className="greeting">Journeys table</p>
       <CreateNewJourneyComponent onAdd={getJourneysHandler} />
       <div className="input-box">
         <InputFilter setAddress={setAddress} />
