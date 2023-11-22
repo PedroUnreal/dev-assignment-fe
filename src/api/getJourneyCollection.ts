@@ -44,12 +44,12 @@ export const GET_JOURNEYS_COLLECTION: TypedDocumentNode<JourneysData, JourneysFi
   }
 `
 
-export function useGetJourneyCollection(inputAddress: string, orderStatus: string): [JourneyDTO[], () => void] {
-  const [getJourneys] = useLazyQuery(GET_JOURNEYS_COLLECTION);
+export function useGetJourneyCollection(inputAddress: string, orderStatus: string) {
+  const [getJourneys, { loading }] = useLazyQuery(GET_JOURNEYS_COLLECTION);
   const [journeys, setJourneys] = useState<JourneyDTO[]>([]);
 
   const getJourneysHandler = useCallback(async () => {
-    const { data } = await getJourneys(addVariablesWrapper({ address: inputAddress, status: orderStatus }))
+    const { data } = await getJourneys(addVariablesWrapper({ address: inputAddress, status: orderStatus }));
 
     if (data?.journeyCollection) {
       setJourneys(data.journeyCollection.edges.map((edge) => {
@@ -63,5 +63,9 @@ export function useGetJourneyCollection(inputAddress: string, orderStatus: strin
     getJourneysHandler();
   }, [getJourneysHandler]);
 
-  return [journeys, getJourneysHandler];
+  return {
+    journeys,
+    loading,
+    getJourneysHandler
+  };
 }

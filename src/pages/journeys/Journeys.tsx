@@ -10,7 +10,7 @@ import "./Journeys.scss";
 export default function Journeys() {
   const [inputAddress, setAddress] = useState<string>("");
   const [orderStatus, setOrderStatus] = useState<OrderStatus>("");
-  const [journeys, getJourneysHandler] = useGetJourneyCollection(inputAddress, orderStatus);
+  const { journeys, loading, getJourneysHandler } = useGetJourneyCollection(inputAddress, orderStatus);
 
   return (
     <div className="content">
@@ -23,6 +23,8 @@ export default function Journeys() {
           setOrderStatus={setOrderStatus}
         />
       </div>
+      {loading && <div>Loading journeys...</div>}
+      {journeys && journeys.length === 0 && !loading && <div>No journeys were found</div>}
       {journeys && journeys.length > 0 && (
         <div className="table-container">
           <table data-testid="journeys_table">
@@ -46,7 +48,6 @@ export default function Journeys() {
           </table>
         </div>
       )}
-      {journeys && journeys.length === 0 && <div>No journeys were found</div>}
     </div>
   );
 }

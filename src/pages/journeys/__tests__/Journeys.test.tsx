@@ -27,7 +27,7 @@ describe("Journeys", () => {
   const getJourneysMock = jest.fn();
 
   test("Table of journeys is rendered", async () => {
-    jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue([journeysMock, getJourneysMock] as any);
+    jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue({ journeys: journeysMock, getJourneysHandler: getJourneysMock } as any);
 
     render(<Journeys />, { wrapper: ApolloWrapper });
 
@@ -38,10 +38,16 @@ describe("Journeys", () => {
     expect(JourneyCollection.useGetJourneyCollection).toBeCalledWith("", "");
   });
   test("Empty journeys", () => {
-    jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue([[], getJourneysMock] as any);
+    jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue({ journeys: [], getJourneysHandler: getJourneysMock } as any);
     render(<Journeys />, { wrapper: ApolloWrapper });
 
     expect(screen.getByText("No journeys were found")).toBeInTheDocument();
+  });
+  test("Loading state", () => {
+    jest.spyOn(JourneyCollection, "useGetJourneyCollection").mockReturnValue({ journeys: [], loading: true, getJourneysHandler: getJourneysMock } as any);
+    render(<Journeys />, { wrapper: ApolloWrapper });
+
+    expect(screen.getByText("Loading journeys...")).toBeInTheDocument();
   });
 });
 

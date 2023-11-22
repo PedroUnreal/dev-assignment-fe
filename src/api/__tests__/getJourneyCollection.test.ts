@@ -62,7 +62,7 @@ describe("getJourneyCollection", () => {
   });
 
   test("Returns journeys list", async () => {
-    jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys] as any);
+    jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys, { loading: false }] as any);
 
     let result: any;
 
@@ -78,11 +78,11 @@ describe("getJourneyCollection", () => {
       }
     });
 
-    expect(result.current[0]).toEqual(formattedJourneysList);
+    expect(result.current.journeys).toEqual(formattedJourneysList);
   });
 
   test("Is called with filters", async () => {
-    jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys] as any);
+    jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys, { loading: false }] as any);
 
     /* eslint-disable */
     await act(() => {
