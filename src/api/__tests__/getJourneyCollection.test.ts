@@ -3,51 +3,51 @@ import { useGetJourneyCollection } from "../getJourneyCollection";
 import * as ApolloClient from "@apollo/client";
 
 const journeysMockResponse = {
-  "data": {
-    "journeyCollection": {
-      "edges": [
+  data: {
+    journeyCollection: {
+      edges: [
         {
-          "node": {
-            "id": "1f1d6c64-b924-4ea1-8b69-a5e76a31f258",
-            "fare": 4495,
-            "status": "COMPLETED",
-            "inbound": false,
-            "__typename": "journey",
-            "to_address": "221b Baker Street, London",
-            "from_address": "London Heathrow Airport (HTR)",
-            "traveller_info": {
-              "id": "e39d35ab-ecca-483d-908e-7ce22987ae92",
-              "last_name": "Holmes",
-              "__typename": "traveller_info",
-              "first_name": "Sherlock",
-              "phone_number": "+32789459242"
-            }
+          node: {
+            id: "1f1d6c64-b924-4ea1-8b69-a5e76a31f258",
+            fare: 4495,
+            status: "COMPLETED",
+            inbound: false,
+            __typename: "journey",
+            to_address: "221b Baker Street, London",
+            from_address: "London Heathrow Airport (HTR)",
+            traveller_info: {
+              id: "e39d35ab-ecca-483d-908e-7ce22987ae92",
+              last_name: "Holmes",
+              __typename: "traveller_info",
+              first_name: "Sherlock",
+              phone_number: "+32789459242",
+            },
           },
-          "__typename": "journeyEdge"
+          __typename: "journeyEdge",
         },
       ],
-      "__typename": "journeyConnection"
-    }
-  }
+      __typename: "journeyConnection",
+    },
+  },
 };
 
 const formattedJourneysList = [
   {
-    "id": "1f1d6c64-b924-4ea1-8b69-a5e76a31f258",
-    "fare": 4495,
-    "status": "COMPLETED",
-    "inbound": false,
-    "__typename": "journey",
-    "to_address": "221b Baker Street, London",
-    "from_address": "London Heathrow Airport (HTR)",
-    "traveller_info": {
-      "id": "e39d35ab-ecca-483d-908e-7ce22987ae92",
-      "last_name": "Holmes",
-      "__typename": "traveller_info",
-      "first_name": "Sherlock",
-      "phone_number": "+32789459242"
-    }
-  }
+    id: "1f1d6c64-b924-4ea1-8b69-a5e76a31f258",
+    fare: 4495,
+    status: "COMPLETED",
+    inbound: false,
+    __typename: "journey",
+    to_address: "221b Baker Street, London",
+    from_address: "London Heathrow Airport (HTR)",
+    traveller_info: {
+      id: "e39d35ab-ecca-483d-908e-7ce22987ae92",
+      last_name: "Holmes",
+      __typename: "traveller_info",
+      first_name: "Sherlock",
+      phone_number: "+32789459242",
+    },
+  },
 ];
 
 describe("getJourneyCollection", () => {
@@ -62,27 +62,31 @@ describe("getJourneyCollection", () => {
   });
 
   test("Returns journeys list", async () => {
-    jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys, { loading: false }] as any);
+    jest
+      .spyOn(ApolloClient, "useLazyQuery")
+      .mockReturnValue([getJourneys, { loading: false }] as any);
 
     let result: any;
 
     // eslint-disable-next-line
     await act(() => {
       result = renderHook(() => useGetJourneyCollection("", "")).result;
-    })
+    });
 
     expect(getJourneys).toBeCalledWith({
       variables: {
         address: "",
         status: "",
-      }
+      },
     });
 
     expect(result.current.journeys).toEqual(formattedJourneysList);
   });
 
   test("Is called with filters", async () => {
-    jest.spyOn(ApolloClient, "useLazyQuery").mockReturnValue([getJourneys, { loading: false }] as any);
+    jest
+      .spyOn(ApolloClient, "useLazyQuery")
+      .mockReturnValue([getJourneys, { loading: false }] as any);
 
     /* eslint-disable */
     await act(() => {
@@ -93,7 +97,7 @@ describe("getJourneyCollection", () => {
       variables: {
         address: "London",
         status: "COMPLETED",
-      }
+      },
     });
   });
 });

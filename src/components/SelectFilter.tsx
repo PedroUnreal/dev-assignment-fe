@@ -3,23 +3,23 @@ import { useCallback } from "react";
 export const options: Array<{ value: OrderStatus; label: string }> = [
   {
     value: "",
-    label: "ALL"
+    label: "ALL",
   },
   {
     value: "PENDING",
-    label: "PENDING"
+    label: "PENDING",
   },
   {
     value: "COMPLETED",
-    label: "COMPLETED"
+    label: "COMPLETED",
   },
   {
     value: "CANCELLED",
-    label: "CANCELLED"
+    label: "CANCELLED",
   },
   {
     value: "IN PROGRESS",
-    label: "IN PROGRESS"
+    label: "IN PROGRESS",
   },
 ];
 
@@ -36,15 +36,24 @@ export default function SelectFilter({
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setOrderStatus(e.target.value as OrderStatus);
     },
-    [setOrderStatus]
+    [setOrderStatus],
   );
 
   return (
     <div>
       <label htmlFor="select-filter">Select journey status:</label>
-      <select id="select-filter" value={orderStatus} onChange={onSelect} data-testid="select">
+      <select
+        id="select-filter"
+        value={orderStatus}
+        onChange={onSelect}
+        data-testid="select"
+      >
         {options.map((option) => (
-          <option key={option.label} value={option.value} data-testid="select-option">
+          <option
+            key={option.label}
+            value={option.value}
+            data-testid="select-option"
+          >
             {option.label}
           </option>
         ))}

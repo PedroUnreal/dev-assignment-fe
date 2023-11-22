@@ -1,6 +1,6 @@
-import { gql, useMutation } from '@apollo/client';
-import { useCallback } from 'react';
-import { addVariablesWrapper } from './utils/variablesAdapter';
+import { gql, useMutation } from "@apollo/client";
+import { useCallback } from "react";
+import { addVariablesWrapper } from "./utils/variablesAdapter";
 
 export const CREATE_JOURNEY = gql`
   mutation insertIntojourneyCollection($objects: [journeyInsertInput!]!) {
@@ -9,7 +9,8 @@ export const CREATE_JOURNEY = gql`
 `;
 
 export function useCreateJourney() {
-  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_JOURNEY);
+  const [mutateFunction, { data, loading, error }] =
+    useMutation(CREATE_JOURNEY);
 
   const createJourney = useCallback(
     async (args: { objects: Omit<JourneyDTO, "id">[] }) => {

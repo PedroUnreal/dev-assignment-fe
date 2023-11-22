@@ -24,7 +24,9 @@ function Header() {
             </li>
           </ul>
         </nav>
-        <div className="user-info">{userInfoResult && <p>{`Welcome back, ${name} <${email}>`}</p>}</div>
+        <div className="user-info">
+          {userInfoResult && <p>{`Welcome back, ${name} <${email}>`}</p>}
+        </div>
       </header>
     </div>
   );

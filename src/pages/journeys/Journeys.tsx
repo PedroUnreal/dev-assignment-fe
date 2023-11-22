@@ -10,7 +10,10 @@ import "./Journeys.scss";
 export default function Journeys() {
   const [inputAddress, setAddress] = useState<string>("");
   const [orderStatus, setOrderStatus] = useState<OrderStatus>("");
-  const { journeys, loading, getJourneysHandler } = useGetJourneyCollection(inputAddress, orderStatus);
+  const { journeys, loading, getJourneysHandler } = useGetJourneyCollection(
+    inputAddress,
+    orderStatus,
+  );
 
   return (
     <div className="content">
@@ -24,7 +27,9 @@ export default function Journeys() {
         />
       </div>
       {loading && <div>Loading journeys...</div>}
-      {journeys && journeys.length === 0 && !loading && <div>No journeys were found</div>}
+      {journeys && journeys.length === 0 && !loading && (
+        <div>No journeys were found</div>
+      )}
       {journeys && journeys.length > 0 && (
         <div className="table-container">
           <table data-testid="journeys_table">
@@ -42,7 +47,11 @@ export default function Journeys() {
             </thead>
             <tbody>
               {journeys.map((journey) => (
-                <Journey key={journey.id} journey={journey} getJourneysHandler={getJourneysHandler} />
+                <Journey
+                  key={journey.id}
+                  journey={journey}
+                  getJourneysHandler={getJourneysHandler}
+                />
               ))}
             </tbody>
           </table>
@@ -52,27 +61,38 @@ export default function Journeys() {
   );
 }
 
-const Journey = memo(({ journey, getJourneysHandler }: { journey: JourneyDTO, getJourneysHandler: () => void }) => {
-  return (
-    <tr className="journey">
-      {journey.inbound ? (
-        <td className="icon">&#128747;</td>
-      ) : (
-        <td className="icon">&#128748;</td>
-      )}
-      <td>{journey.traveller_info.first_name}</td>
-      <td>{journey.traveller_info.last_name}</td>
-      <td>{journey.from_address}</td>
-      <td>{journey.to_address}</td>
-      <td>{journey.status}</td>
-      <td className="complete-button">
-        {journey.status === "IN PROGRESS" &&
-          (<ButtonCompleteJourney onAdd={getJourneysHandler} id={journey.id} />)}</td>
-      <td>
-        {journey.status !== "CANCELLED" &&
-          <ButtonCancelJourney onAdd={getJourneysHandler} id={journey.id} />
-        }
-      </td>
-    </tr>
-  )
-}, ((oldProps, newProps) => oldProps.journey.status === newProps.journey.status));
+const Journey = memo(
+  ({
+    journey,
+    getJourneysHandler,
+  }: {
+    journey: JourneyDTO;
+    getJourneysHandler: () => void;
+  }) => {
+    return (
+      <tr className="journey">
+        {journey.inbound ? (
+          <td className="icon">&#128747;</td>
+        ) : (
+          <td className="icon">&#128748;</td>
+        )}
+        <td>{journey.traveller_info.first_name}</td>
+        <td>{journey.traveller_info.last_name}</td>
+        <td>{journey.from_address}</td>
+        <td>{journey.to_address}</td>
+        <td>{journey.status}</td>
+        <td className="complete-button">
+          {journey.status === "IN PROGRESS" && (
+            <ButtonCompleteJourney onAdd={getJourneysHandler} id={journey.id} />
+          )}
+        </td>
+        <td>
+          {journey.status !== "CANCELLED" && (
+            <ButtonCancelJourney onAdd={getJourneysHandler} id={journey.id} />
+          )}
+        </td>
+      </tr>
+    );
+  },
+  (oldProps, newProps) => oldProps.journey.status === newProps.journey.status,
+);

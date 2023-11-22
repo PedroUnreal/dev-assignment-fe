@@ -5,7 +5,9 @@ import { useSetJourneyStatus } from "../setJourneyStatus";
 describe("setJourneyStatus", () => {
   test("Called with correct status", async () => {
     const setJourneyStatus = jest.fn();
-    jest.spyOn(ApolloClient, "useMutation").mockReturnValue([setJourneyStatus, {}] as any);
+    jest
+      .spyOn(ApolloClient, "useMutation")
+      .mockReturnValue([setJourneyStatus, {}] as any);
 
     const { result } = renderHook(() => useSetJourneyStatus());
 
@@ -18,7 +20,7 @@ describe("setJourneyStatus", () => {
       variables: {
         id: "id",
         status: "COMPLETED",
-      }
+      },
     });
   });
 });

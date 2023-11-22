@@ -1,4 +1,4 @@
-import { useRef, MutableRefObject } from 'react';
+import { useRef, MutableRefObject } from "react";
 
 export function useDebounce(timeout = 500) {
   const timer: MutableRefObject<number | null> = useRef(null);

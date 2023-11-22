@@ -6,7 +6,7 @@ type JourneyDTO = {
   from_address: string;
   inbound: boolean;
   traveller_info: TravellerDTO;
-}
+};
 
 type TravellerDTO = {
   id: string;
@@ -15,6 +15,6 @@ type TravellerDTO = {
   phone_number: string;
   passenger_count: number;
   flight_number: string;
-}
+};
 
 type OrderStatus = "PENDING" | "COMPLETED" | "" | "IN PROGRESS" | "CANCELLED";
